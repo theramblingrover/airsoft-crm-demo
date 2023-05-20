@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+{% block title %}
+Регистрация игрока {{ player.nick }}
+{% endblock title %}
+{% block  content %}
+<div class="container">
+  <ul>
+    <li class="list-group-item">
+      <h1>Регистрация игрока {{ player.nick }} <br>
+      на игру {{ game.name }} {{ game.date }} </h1>
+    </li>
+    <li class="list-group-item">
+      <form method="post" action="{% url 'games:game_registration' game.id %}">
+        {% csrf_token %}
+        {{ form.player_id }}{{ form.game_id }}
+        {% if achieve %}
+          <p>Бесплатная игра действительна до {{ achieve.valid_time }}</p>
+          <p><span class="form-check form-switch">{{ form.achieve|addclass:'form-check-input' }} Списать бесплатную игру</span></p>
+        {% else %}
+          <p>Нет доступных бесплатных игр</p>
+          {{ form.achieve.as_hidden }}
+        {% endif %}
+        <button type="submit" class="btn btn-outline-primary">
+          Подтвердить
+        </button>
+        <a href = {% url 'games:game' game.id %} class="btn btn-outline-secondary">Отмена</a>
+      </form>
+    </li>
+  </ul>
+</div>
+{% endblock content %}

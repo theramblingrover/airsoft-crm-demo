@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}
+Предстоящие игры
+{% endblock title %}
+{% block  content %}
+<div class="container">
+  <h1 class="fw-bold">Предстоящие игры</h1>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Название</th>
+        <th scope="col">Дата проведения</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for game in page_obj %}
+        <tr>
+          <th><a href = {% url 'games:game' game.pk %}>{{ game.name }}</a></th>
+          <td>{{ game.date }}</td>
+        </tr>
+      {% endfor %}
+    </tbody> 
+  </table>
+</div>
+{% endblock content %}

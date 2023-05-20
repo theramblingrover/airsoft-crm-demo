@@ -1,0 +1,12 @@
+asgiref==3.6.0
+Django==4.2
+django-s3-sqlite==0.0.5
+flake8==6.0.0
+mccabe==0.7.0
+Pillow==9.5.0
+pycodestyle==2.10.0
+pyflakes==3.0.1
+pypng==0.20220715.0
+qrcode==7.4.2
+sqlparse==0.4.3
+typing-extensions==4.5.0

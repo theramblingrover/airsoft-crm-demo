@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}
+Игра {{ game.name }} {{ game.date }}
+{% endblock title %}
+{% block  content %}
+<div class="container">
+  <h1>Игра {{ game.name }} {{ game.date }}</h1>
+  <form method="post" action="{% url 'games:confirm_registration' game.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="col-md-6">
+      <button type="submit" class="btn btn-outline-primary">
+        Зарегистрировать
+      </button>
+    </div>
+  </form>
+  <hr>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Позывной</th>
+        <th scope="col">Личный номер</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for participant in registrations %}
+        <tr>
+          <th><a href = {% url 'players:player' participant.player.pk %}>{{ participant.player.nick }}</th>
+          <td>{{ participant.player.personal_id }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>  
+  </table>
+{% endblock content %}

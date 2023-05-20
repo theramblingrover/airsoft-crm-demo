@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}
+Список игроков
+{% endblock title %}
+{% block  content %}
+<div class="container">
+  <h1 class="fw-bold">Клиенты клуба</h1>
+  <a class="btn btn-outline-primary" href="{% url 'players:add_player' %}">Добавить Клиента</a>
+  <hr>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Позывной</th>
+        <th scope="col">Сумма покупок</th>
+        <th scope="col">Личный номер</th>
+        <th scope="col">Бесплатные игры</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for player in page_obj %}
+        <tr>
+          <th><a href = {% url 'players:player' player.pk %}>{{ player.nick }}</a></th>
+          <td>{{ player.purchase_sum }}</td>
+          <td>{{ player.personal_id }}</td>
+          <td>{{ player.achieves.count }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>  
+  </table>
+</div>
+{% endblock content %}

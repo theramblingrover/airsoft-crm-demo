@@ -1,0 +1,38 @@
+<header>
+  {% load static %}
+  {% with request.resolver_match.view_name as view_name %} 
+  <nav class="navbar navbar-danger " style="background-color: red">
+    <div class="container">
+      <a class="navbar-brand" href= "{% url 'games:index' %}">
+        <p class="fs-2"><img src= {% static 'img/club_logo_demo.png' %}  width="50" height="50" 
+          class="d-inline-block align-top" alt="">
+        <span style="color:#fffcfc">New</span> Airsoft</p>
+      </a>
+      <ul class="nav nav-tabs">
+        {#{% if user.is_authenticated  %}#}
+        <li class="nav-item"> 
+          <a class="nav-link {% if 'games' in view_name %}active{% endif %}" href="{% url 'games:index' %}">Игры</a>
+        </li>
+        <li class="nav-item"> 
+          <a class="nav-link  {% if 'players' in view_name %}active{% endif %}" href="{% url 'players:index' %}">Клиенты</a>
+        </li>
+        <li class="nav-item">
+          <div class="btn-group">
+            <button type="button" class="btn nav-link">Отчеты</button>
+            <button type="button" class="btn nav-link dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="visually-hidden">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">Отчет</a></li>
+              <li><a class="dropdown-item" href="#">Другой отчет</a></li>
+              <li><a class="dropdown-item" href="#">Третий отчет</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#">Список отчетов</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  {% endwith %}
+</header>

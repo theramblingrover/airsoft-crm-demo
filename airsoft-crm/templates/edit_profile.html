@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}
+Профиль игрока
+{% endblock title %}
+{% block  content %}
+<div class="container">
+  <h1>Профиль игрока</h1>
+  <article>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type=submit class="btn btn-outline-primary" value="Сохранить" />
+        <a href = {% url "players:index" %} class="btn btn-outline-secondary">Отмена</a>
+    </form>
+  </article>
+</div>
+<br>
+{% endblock content %}

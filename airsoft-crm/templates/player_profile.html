@@ -1,0 +1,80 @@
+<script>
+  function copyToClipboard(el_id) {
+    const str = document.getElementById(el_id).innerText;
+    const el = document.createElement('textarea');
+    el.value = str;
+    el.setAttribute('readonly', '');
+    el.style.position = 'absolute';
+    el.style.left = '-9999px';
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+  }
+</script>
+
+{% extends 'base.html' %}
+{% load user_filters %}
+{% block title %}
+Карточка клиента {{ player.nick }}
+{% endblock title %}
+{% block  content %}
+<div class="container">
+  {# <a href = {{ referer }}><< Назад </a> #}
+  <h1>Карточка клиента</h1>
+  <article>
+    <ul>
+      <li class="list-group-item">
+        Позывной: <span id = "nick">{{ player.nick }}</span><br>
+        <button class="btn btn-outline-primary" onclick="copyToClipboard('nick')">Скопировать</button>
+      </li class="list-group-item">
+      <li class="list-group-item">
+        Сумма покупок: {{ player.purchase_sum }}
+      </li>
+      <li class="list-group-item">
+        Бесплатные игры: {{ player.achieves.count }}
+      </li>
+      <li class="list-group-item">
+        E-mail: {{ player.email }}
+      </li>
+      <li class="list-group-item">
+        Личный номер: {{ player.personal_id }}
+      </li>
+      <li class="list-group-item">
+        Личный хэш: <span id="personalHash">{{ player.personal_hash }}</span>
+        <button class="btn btn-outline-primary" onclick="copyToClipboard('personalHash')">Скопировать</button>
+      </li>
+      <li class="list-group-item">
+        День рождения: {{ player.birthday }}
+      </li>
+      <li class="list-group-item">
+
+          QR-Код:
+          <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQR" aria-expanded="false" aria-controls="collapseQR">
+            Показать
+          </button>
+
+        <div class="collapse" id="collapseQR">
+          <div class="card card-body">
+            <a href={% url 'players:get_qr' player.id %}>
+            <img src="{% url 'players:get_qr' player.id %}" alt="{{ player.nick }}">
+            </a>
+          </div>
+        </div>
+      </li>
+      <li class="list-group-item">
+      <form action="{% url 'players:add_purchase' player.id %}" method="post">
+        {% csrf_token %}
+        {{ form_purchase.purchase_sum }}
+        <input  class="btn btn-outline-primary" type="submit" value="Добавить покупку">
+      </form>
+      <form action="{% url 'players:add_achive' player.id %}" method="post">
+        {% csrf_token %}
+        {{ form_achive }}
+        <input  class="btn btn-outline-primary" type="submit" value="Добавить бесплатную игру">
+      </form>
+    </li>
+    </ul>
+  </article>
+</div>
+{% endblock content %}

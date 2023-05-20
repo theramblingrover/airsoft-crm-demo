@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'kugel_players.urls'
+ROOT_URLCONF = 'airsoft-crm.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'kugel_players.wsgi.application'
+WSGI_APPLICATION = 'airsoft-crm.wsgi.application'
 
 
 # Database
