@@ -9,11 +9,11 @@ class Player(TimestampedModel):
     email = models.EmailField('E-mail', unique=True)
     telegram = models.CharField('Telegram', max_length=50)
     personal_id = models.CharField('Персональный номер', max_length=10,
-                                   unique=True)
+                                   unique=True, blank=True, null=True)
     personal_hash = models.CharField('Машиночитаемый ID', max_length=500,
                                      unique=True, db_index=True)
-    birthday = models.DateField(auto_now_add=False, auto_now=False, null=True,
-                                blank=True)
+    birthday = models.DateField('Дата рождения', auto_now_add=False,
+                                auto_now=False, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Игрок'
@@ -60,3 +60,7 @@ class Purchase(TimestampedModel):
     owner = models.ForeignKey(Player, on_delete=models.RESTRICT,
                               related_name='purchases')
     total_price = models.IntegerField(default=0)
+
+    class Meta:
+        verbose_name = 'Покупка в магазине'
+        verbose_name_plural = 'Покупка в магазине'

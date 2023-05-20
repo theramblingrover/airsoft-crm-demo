@@ -22,11 +22,13 @@ def index(request):
 
 def add_player(request):
     form = PlayerForm(request.POST or None)
+    print(request.method, form.errors)
     if request.method == 'POST' and form.is_valid():
         player = form.save(commit=False)
+        print(player)
         player.personal_hash = (
             b32encode(sha256(
-                'kugel'.encode('utf-8')
+                'Club'.encode('utf-8')
             ).digest()).decode().strip('=') + '-' +
             b32encode(sha256(
                 (player.email+player.nick+player.telegram).lower(
@@ -51,20 +53,21 @@ def player(request, player_id):
         'form_achive': form_achive,
         'referer': request.headers['Referer']
     }
-    print(request.headers)
-    context = context | player.purchases.aggregate(Sum('total_price'))
+    # context = context | player.purchases.aggregate(Sum('total_price'))
     return render(request, 'player_profile.html', context)
 
 
 def player_edit(request, player_id):
     player = Player.objects.get(pk=player_id)
     form = PlayerForm(request.POST or None, instance=player)
+    print(player)
     if request.method == 'POST' and form.is_valid():
         player = form.save(commit=False)
-        player.personal_id = f'AK-{str(player.pk*111).rjust(7, "0")}'
+        player.pk = player_id
+        player.personal_id = f'AK-{str(1+player.pk*111).rjust(7, "0")}'
         player.personal_hash = (
             b32encode(sha256(
-                'kugel'.encode('utf-8')
+                'Club'.encode('utf-8')
             ).digest()).decode().strip('=') + '-' +
             b32encode(sha256(
                 (player.email+player.nick+player.telegram).lower(
