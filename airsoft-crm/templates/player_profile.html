@@ -20,12 +20,12 @@
 {% endblock title %}
 {% block  content %}
 <div class="container">
-  {# <a href = {{ referer }}><< Назад </a> #}
-  <h1>Карточка клиента</h1>
-  <article>
+  <a href = {{ referer }}><< Назад </a>
+  <div class="card">
+    <div class="card-header"><h1>Карточка клиента</h1></div>
     <ul>
       <li class="list-group-item">
-        Позывной: <span id = "nick">{{ player.nick }}</span><br>
+        Позывной: <span id = "nick">{{ player.nick }}</span>
         <button class="btn btn-outline-primary" onclick="copyToClipboard('nick')">Скопировать</button>
       </li class="list-group-item">
       <li class="list-group-item">
@@ -44,6 +44,8 @@
         Личный хэш: <span id="personalHash">{{ player.personal_hash }}</span>
         <button class="btn btn-outline-primary" onclick="copyToClipboard('personalHash')">Скопировать</button>
       </li>
+      <li class="list-group-item">
+        Telegram: {{ player.telegram }}
       <li class="list-group-item">
         День рождения: {{ player.birthday }}
       </li>
@@ -75,6 +77,6 @@
       </form>
     </li>
     </ul>
-  </article>
+  </div>
 </div>
 {% endblock content %}

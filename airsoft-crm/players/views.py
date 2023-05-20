@@ -1,16 +1,14 @@
-from hashlib import sha256
-from base64 import b32encode
 from qrcode import QRCode
 from qrcode.constants import ERROR_CORRECT_H
 from PIL import Image, ImageDraw, ImageFont
 
-from django.db.models import Sum
 from django.utils.timezone import now, timedelta
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .forms import (PlayerForm, AddPurchaseForm, AddAchieveForm, )
 from .models import Player, Achieve
+from common.utils import get_player_hash, get_player_id
 
 
 def index(request):
@@ -26,17 +24,9 @@ def add_player(request):
     if request.method == 'POST' and form.is_valid():
         player = form.save(commit=False)
         print(player)
-        player.personal_hash = (
-            b32encode(sha256(
-                'Club'.encode('utf-8')
-            ).digest()).decode().strip('=') + '-' +
-            b32encode(sha256(
-                (player.email+player.nick+player.telegram).lower(
-                ).encode('utf-8')
-            ).digest()).decode().strip('=')
-        )
+        player.personal_hash = get_player_hash(player)
         player.save()
-        player.personal_id = f'AK-{str(1+player.pk*111).rjust(7, "0")}'
+        player.personal_id = get_player_id(player)
         player.save()
         return redirect('players:player', player_id=player.pk)
     context = {'form': form}
@@ -46,14 +36,12 @@ def add_player(request):
 def player(request, player_id):
     form_purchase = AddPurchaseForm(request.POST or None)
     form_achive = AddAchieveForm(request.POST or None)
-    player = Player.objects.get(pk=player_id)
     context = {
-        'player': Player.objects.get(pk=player_id),
+        'player': get_object_or_404(Player, pk=player_id),
         'form_purchase': form_purchase,
         'form_achive': form_achive,
         'referer': request.headers['Referer']
     }
-    # context = context | player.purchases.aggregate(Sum('total_price'))
     return render(request, 'player_profile.html', context)
 
 
@@ -63,17 +51,7 @@ def player_edit(request, player_id):
     print(player)
     if request.method == 'POST' and form.is_valid():
         player = form.save(commit=False)
-        player.pk = player_id
-        player.personal_id = f'AK-{str(1+player.pk*111).rjust(7, "0")}'
-        player.personal_hash = (
-            b32encode(sha256(
-                'Club'.encode('utf-8')
-            ).digest()).decode().strip('=') + '-' +
-            b32encode(sha256(
-                (player.email+player.nick+player.telegram).lower(
-                ).encode('utf-8')
-            ).digest()).decode().strip('=')
-        )
+        player.personal_hash = get_player_hash(player)
         player.save()
         return redirect('players:player', player_id=player.pk)
     context = {"form": form, "is_edit": True}
