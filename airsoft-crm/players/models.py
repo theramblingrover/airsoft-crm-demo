@@ -34,6 +34,8 @@ class Achieve(TimestampedModel):
     valid_time = models.DateField(null=True)
 
     class Meta:
+        verbose_name = 'Бесплатная игра'
+        verbose_name_plural = 'Бесплатные игры'
         ordering = ('valid_time',)
         get_latest_by = ('-valid_time',)
 

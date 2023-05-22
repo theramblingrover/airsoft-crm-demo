@@ -20,10 +20,8 @@ def index(request):
 
 def add_player(request):
     form = PlayerForm(request.POST or None)
-    print(request.method, form.errors)
     if request.method == 'POST' and form.is_valid():
         player = form.save(commit=False)
-        print(player)
         player.personal_hash = get_player_hash(player)
         player.save()
         player.personal_id = get_player_id(player)
@@ -63,7 +61,6 @@ def add_purchase(request, player_id):
     form = AddPurchaseForm(request.POST or None)
     if form.is_valid():
         player.purchases.create(total_price=form.cleaned_data['purchase_sum'])
-        player.save()
     return redirect('players:player', player_id=player_id)
 
 

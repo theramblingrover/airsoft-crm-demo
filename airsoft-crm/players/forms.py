@@ -7,7 +7,7 @@ from .models import Player, Registration
 class PlayerForm(ModelForm):
     class Meta:
         model = Player
-        fields = ["nick", "email", 'telegram', 'birthday', 'personal_id']
+        fields = ["nick", "email", 'telegram', 'birthday']
 
 
 class AddPurchaseForm(Form):
